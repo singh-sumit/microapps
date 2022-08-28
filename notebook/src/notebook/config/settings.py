@@ -61,7 +61,6 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.RemoteUserMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -140,14 +139,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# REST Framework CONFIGURATION
-from rest_framework_simplejwt.authentication import JWTAuthentication
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ]
-}
-
 ###################### RSA PUBLIC KEY CONFIGURATION ################################
 RSA_KEY_DIR = os.path.join(BASE_DIR, env('RSA_KEY_DIR_NAME', default='vault'))
 RSA_PUBLIC_KEY_FILE = os.path.join(RSA_KEY_DIR, env('RSA_PUBLIC_KEY_FILE_NAME', default='jwt_key.pub'))
@@ -172,4 +163,11 @@ SIMPLE_JWT = {
     'TOKEN_TYPE_CLAIM': 'token_type',
 
     'JTI_CLAIM': 'jti',
+}
+# REST Framework CONFIGURATION
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTStatelessUserAuthentication',
+    ],
 }
